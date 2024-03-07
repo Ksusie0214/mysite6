@@ -6,5 +6,7 @@
 </typeAliases>
 <mappers>
 <mapper resource="mybatis/mappers/mysite6.xml" />
+<mapper resource="mybatis/mappers/user.xml" />
+<mapper resource="mybatis/mappers/guest.xml" />
 </mappers>
 </configuration>
