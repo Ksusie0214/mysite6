@@ -9,6 +9,9 @@
 <link href="${pageContext.request.contextPath}/assets/css/mysite.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/guestbook.css" rel="stylesheet" type="text/css">
 
+<!-- Axios 라이브러리 포함 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -69,7 +72,8 @@
 					<input type="hidden" name="action" value="add">
 
 				</form>
-			 
+				<div id="guestbookListArea">
+				<!--  
 				<c:forEach items="${requestScope.guestList}" var="guestVo">
 					<table class="guestRead">
 						<colgroup>
@@ -88,8 +92,9 @@
 							<td colspan=4 class="text-left">${guestVo.content}</td>
 						</tr>
 					</table>
-					<!-- //guestRead -->
 				</c:forEach>
+				-->
+				</div>
 			</div>
 			<!-- //guestbook -->
 
@@ -103,5 +108,70 @@
 	<!-- //wrap -->
 
 </body>
+
+<script>
+//DOM tree가 생성되었을 때
+document.addEventListener("DOMContentLoaded", function(){
+	
+	//리스트 요청 데이터만 받기
+	axios({
+			method: 'get', // put, post, delete
+			url: '/mysite6/api/guestbooks',
+			headers: {"Content-Type" : "application/json; charset=utf-8"}, //전송타입
+			
+			//params: guestVo, //get방식 파라미터로 값이 전달
+			//data: guestVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+			
+			responseType: 'json' //수신타입
+		})
+		.then(function (response) {
+			console.log(response.data); //수신데이타
+			
+			for(let i=0; i<response.data.length; i++){
+				let guestVo = response.data[i];
+				render(guestVo);
+			}
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	
+});
+
+
+function render(guestVo){
+	console.log("render()");
+	console.log(guestVo);
+	
+	let guestbookListArea = document.querySelector("#guestbookListArea");
+	console.log(guestbookListArea);
+		
+		
+	
+	let str = '';
+	str += '<table class="guestRead">';
+	str += '	<colgroup>';
+	str += '		<col style="width: 10%;">';
+	str += '		<col style="width: 40%;">';
+	str += '		<col style="width: 40%;">';
+	str += '		<col style="width: 10%;">';
+	str += '	</colgroup>';
+	str += '<tr>';
+	str += '	<td>'+guestVo.no+'</td>';
+	str += '	<td>'+guestVo.name+'</td>';
+	str += '	<td>'+guestVo.date+'</td>';
+	str += '	<td><a href=>[삭제]</a></td>';
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td colspan=4 class="text-left">'+guestVo.content+'</td>';
+	str += '</tr>';
+	str += '</table>';
+	
+	guestbookListArea.insertAdjacentHTML("beforeend",str);
+	
+}
+</script>
+
+
 
 </html>

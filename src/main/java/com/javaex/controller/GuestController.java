@@ -50,5 +50,14 @@ public class GuestController {
 		
 		return "redirect:/guest/list";
 	}
+	
+	////////////////////////////////////////////////////////////////////////
+	//ajax 방명록 main
+	@RequestMapping(value="/guest/ajaxindex", method= {RequestMethod.GET, RequestMethod.POST})
+	public String ajaxIndex() {
+		System.out.println("GuestbookController.ajaxindex()");
+		
+		return"/guestbook/ajaxIndex";
+	}
 
 }
