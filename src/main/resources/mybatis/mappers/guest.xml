@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="guest">
 	<!-- 쿼리문작성 -->
-	
+
 	<!-- 방명록 리스트 -->
 	<select id="list" resultType="com.javaex.vo.GuestVo">
 		<![CDATA[
@@ -15,13 +15,14 @@
 			from guest
 		]]>
 	</select>
-	
+
 	<!-- 방명록 등록 -->
 	<insert id="AddList" parameterType="com.javaex.vo.GuestVo">
-		 insert into guest
-   		 value(null, #{name}, #{password}, now(), #{content})
+		 <![CDATA[ 
+			insert into guest
+	   		value(null, #{name}, #{password}, now(), #{content})]]>
 	</insert>
-	
+
 	<!-- 방명록 삭제 -->
 	<delete id="delete" parameterType="com.javaex.vo.GuestVo">
     	<![CDATA[
@@ -29,6 +30,31 @@
 	    	where no = ${no} 
 	    	and password = #{password}
     	]]>
-	
+
 	</delete>
+
+	<!-- 데이터1개 가져오기 -->
+	<select id="selectOne" parameterType="int" resultType="com.javaex.vo.GuestVo">
+      <![CDATA[
+         select  no,
+                 name,
+                 password,
+                 content,
+                 date
+         from guest
+         where no = #{no}
+      ]]>
+	</select>
+
+	<!-- ajax 저장(저장하고 번호 알아내기) -->
+	<insert id="insertSelectKey" parameterType="com.javaex.vo.GuestVo">
+		<![CDATA[ 
+			insert into guest
+	   		value(null, #{name}, #{password}, now(), #{content})]]>
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
+		   	<![CDATA[
+		   		select last_insert_id();
+		   	]]>
+		</selectKey>
+	</insert>
 </mapper>

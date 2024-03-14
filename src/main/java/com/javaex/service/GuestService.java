@@ -34,5 +34,25 @@ public class GuestService {
 		
 		guestDao.guestDelete(guestVo);
 	}
+	
+	//ajax 등록
+	public GuestVo exeAddandGuest(GuestVo guestVo) {
+		System.out.println("GuestService.exeAddandGuest()");
+		
+		guestDao.insertSelectKey(guestVo);
+		System.out.println("후"+guestVo); //no있음
+		
+		GuestVo gVo = guestDao.guestSelectOne(guestVo.getNo());
+
+		return gVo;
+		
+	}
+	
+	//ajax 삭제
+	public void exeGuestDelete(GuestVo guestVo) {
+		System.out.println("GuestService.exeGuestDelete()");
+		System.out.println(guestVo);
+		guestDao.ajaxGuestDelete(guestVo);
+	}
 
 }
