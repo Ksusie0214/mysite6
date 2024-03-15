@@ -49,10 +49,12 @@ public class GuestService {
 	}
 	
 	//ajax 삭제
-	public void exeGuestDelete(GuestVo guestVo) {
+	public int exeGuestDelete(GuestVo guestVo) {
 		System.out.println("GuestService.exeGuestDelete()");
 		System.out.println(guestVo);
-		guestDao.ajaxGuestDelete(guestVo);
+		int count = guestDao.ajaxGuestDelete(guestVo);
+		System.out.println(count);
+		return count;
 	}
 
 }

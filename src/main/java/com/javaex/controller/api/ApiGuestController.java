@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +33,7 @@ public class ApiGuestController {
 	//등록
 	@ResponseBody
 	@RequestMapping(value="/api/guestbooks", method= RequestMethod.POST)
-	public GuestVo add(@ModelAttribute GuestVo guestVo) {
+	public GuestVo add(@RequestBody GuestVo guestVo) {
 		System.out.println("ApiGuestController.add()");
 		
 		GuestVo gVo= guestService.exeAddandGuest(guestVo);
@@ -40,14 +42,15 @@ public class ApiGuestController {
 	}
 	
 	//삭제
-	
-	@RequestMapping(value="/api/guestbooks/delete", method = RequestMethod.POST)
-	public String delete(@ModelAttribute GuestVo guestVo) {
+	@ResponseBody
+	@RequestMapping(value="/api/guestbooks/delete/{no}", method = RequestMethod.DELETE)
+	public int delete(@PathVariable("no") int no, @ModelAttribute GuestVo guestVo) {
 		System.out.println("ApiGuestController.delete()");
-		System.out.println(guestVo);
-		guestService.exeGuestDelete(guestVo);
+		System.out.println(no);
 		
-		return "";
+		int count = guestService.exeGuestDelete(guestVo);
+		System.out.println(count);
+		return count;
 	}
 	
 	
